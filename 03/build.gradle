@@ -1,0 +1,17 @@
+apply plugin: "application"
+
+ext {
+    javaMainClass = "io.github.kahar.URLClassLoaderTest"
+}
+
+jar {
+    manifest {
+        attributes(
+                "Main-Class": javaMainClass
+        )
+    }
+}
+
+application {
+    mainClassName = javaMainClass
+}

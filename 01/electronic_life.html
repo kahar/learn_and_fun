@@ -1,0 +1,424 @@
+<script>
+    var EMPTY_FIELD = "&nbsp;&nbsp;";
+
+    function Vector(x, y) {
+        this.x = x;
+        this.y = y;
+    }
+
+    Vector.prototype.plus = function (other) {
+        return new Vector(this.x + other.x, this.y + other.y);
+    };
+
+    function Grid(width, height) {
+        this.space = new Array(width * height);
+        this.width = width;
+        this.height = height;
+    }
+
+    Grid.prototype.isInside = function (vector) {
+        return vector.x >= 0 && vector.x < this.width &&
+            vector.y >= 0 && vector.y < this.height;
+    };
+    Grid.prototype.get = function (vector) {
+        return this.space[vector.x + this.width * vector.y];
+    };
+    Grid.prototype.set = function (vector, value) {
+        this.space[vector.x + this.width * vector.y] = value;
+    };
+    Grid.prototype.forEach = function (f, context) {
+        for (var y = 0; y < this.height; y++) {
+            for (var x = 0; x < this.width; x++) {
+                var value = this.space[x + y * this.width];
+                if (value != null)
+                    f.call(context, value, new Vector(x, y));
+            }
+        }
+    };
+
+    var directions = {
+        "n": new Vector(0, -1),
+        "ne": new Vector(1, -1),
+        "e": new Vector(1, 0),
+        "se": new Vector(1, 1),
+        "s": new Vector(0, 1),
+        "sw": new Vector(-1, 1),
+        "w": new Vector(-1, 0),
+        "nw": new Vector(-1, -1)
+    };
+
+    function randomElement(array) {
+        return array[Math.floor(Math.random() * array.length)];
+    }
+
+    var directionNames = "n ne e se s sw w nw".split(" ");
+
+    function elementFromChar(legend, ch) {
+        if (ch == " ")
+            return null;
+        var element = new legend[ch]();
+        element.originChar = ch;
+        return element;
+    }
+
+    function World(map, legend) {
+        var grid = new Grid(map[0].length, map.length);
+        this.grid = grid;
+        this.legend = legend;
+
+        map.forEach(function (line, y) {
+            for (var x = 0; x < line.length; x++)
+                grid.set(new Vector(x, y),
+                    elementFromChar(legend, line[x]));
+        });
+    }
+
+
+    function charFromElement(element) {
+        if (element == null)
+            return EMPTY_FIELD;
+        else
+            return element.originChar;
+    }
+
+    World.prototype.turn = function () {
+        var acted = [];
+        this.grid.forEach(function (critter, vector) {
+            if (critter.act && acted.indexOf(critter) == -1) {
+                acted.push(critter);
+                this.letAct(critter, vector);
+            }
+        }, this);
+    };
+    World.prototype.letAct = function (critter, vector) {
+        var actionType = critter.act(new View(this, vector));
+        if (actionType && actionType.type == "move") {
+            var dest = this.checkDestination(actionType, vector);
+            if (dest && this.grid.get(dest) == null) {
+                this.grid.set(vector, null);
+                this.grid.set(dest, critter);
+            }
+        }
+    };
+
+    World.prototype.checkDestination = function (actionType, vector) {
+        if (directions.hasOwnProperty(actionType.direction)) {
+            var dest = vector.plus(directions[actionType.direction]);
+            if (this.grid.isInside(dest))
+                return dest;
+        }
+    };
+
+    World.prototype.toString = function () {
+        var output = "";
+        for (var y = 0; y < this.grid.height; y++) {
+            for (var x = 0; x < this.grid.width; x++) {
+                var element = this.grid.get(new Vector(x, y));
+                output += charFromElement(element);
+            }
+            output += "\n<br>";
+        }
+        return output;
+    };
+
+    function dirPlus(dir, n) {
+        var index = directionNames.indexOf(dir);
+        return directionNames[(index + n + 8) % 8];
+    }
+
+    function View(world, vector) {
+        this.world = world;
+        this.vector = vector;
+    }
+
+    View.prototype.look = function (dir) {
+        var target = this.vector.plus(directions[dir]);
+        if (this.world.grid.isInside(target))
+            return charFromElement(this.world.grid.get(target));
+        else
+            return "#";
+    };
+    View.prototype.findAll = function (ch) {
+        var found = [];
+        for (var dir in directions)
+            if (this.look(dir) == ch)
+                found.push(dir);
+        return found;
+    };
+    View.prototype.find = function (ch) {
+        var found = this.findAll(ch);
+        if (found.length == 0) return null;
+        return randomElement(found);
+    };
+
+    View.prototype.count = function (ch) {
+        var found = this.findAll(ch);
+        return found.length;
+    };
+
+    function Wall() {
+    }
+
+    function sleep(ms) {
+        return new Promise(resolve => setTimeout(resolve, ms));
+    }
+
+    async function animateWorld(world) {
+        var i = 0;
+        var lastRoundWhenEvrythingLives = 0;
+        // for (var i = 0; i < 100000; i++) {
+        await sleep(50);
+        while (true) {
+            i++;
+            world.turn();
+            var statistics = world.getStatistics()
+            if (!statistics.evrythingLives() && lastRoundWhenEvrythingLives === 0) {
+                lastRoundWhenEvrythingLives = i;
+            }
+            if (i % 100 === 0) {
+                await sleep(50);
+                var worldElement = document.getElementById("world");
+                worldElement.innerHTML = world.toString();
+                var statisticsElement = document.getElementById("statistics");
+
+
+                statisticsElement.innerHTML = "round " + i + "<br> lastRoundWhenEvrythingLives" + lastRoundWhenEvrythingLives + "<br>" + statistics.toString();
+            }
+
+
+        }
+    }
+
+    function WorldStatistics() {
+        this.plants = 0;
+        // this.critters = 0;
+        this.smartCritters = 0;
+        // this.tigers = 0;
+        this.smartTigers = 0;
+    }
+
+    WorldStatistics.prototype.add = function (element) {
+        if (element.originChar == "*") {
+            this.plants++;
+            // } else if (element.originChar == "o") {
+            //     this.critters++;
+        } else if (element.originChar == "O") {
+            this.smartCritters++;
+            // } else if (element.originChar == "@") {
+            //     this.tigers++;
+        } else if (element.originChar == "$") {
+            this.smartTigers++;
+        }
+    }
+
+    WorldStatistics.prototype.toString = function () {
+        return "plants: " + this.plants + "<br>smartCritters: " + this.smartCritters + /*"<br>critters: " + this.critters + "<br>tigers: " + this.tigers + */"<br>smartTigers: " + this.smartTigers;
+    }
+
+
+    WorldStatistics.prototype.evrythingLives = function () {
+        return !(this.plants == 0 /*|| this.critters == 0 || this.tigers == 0*/ || this.smartTigers == 0 || this.smartCritters == 0);
+    }
+
+    function LifelikeWorld(map, legend) {
+        World.call(this, map, legend);
+    }
+
+    LifelikeWorld.prototype = Object.create(World.prototype);
+
+    var actionTypes = Object.create(null);
+
+    LifelikeWorld.prototype.letAct = function (critter, vector) {
+        var actionType = critter.act(new View(this, vector));
+        var handled = actionType &&
+            actionType.type in actionTypes &&
+            actionTypes[actionType.type].call(this, critter,
+                vector, actionType);
+        if (!handled) {
+            critter.energy -= 2;
+            if (critter.energy <= 0)
+                this.grid.set(vector, null);
+        }
+    };
+
+    LifelikeWorld.prototype.getStatistics = function () {
+        var result = new WorldStatistics();
+        for (var w = 0; w < this.grid.width; w++) {
+            for (var h = 0; h < this.grid.height; h++) {
+                var element = this.grid.get(new Vector(w, h));
+                if (element != null) {
+                    result.add(element);
+                }
+            }
+        }
+        return result;
+    };
+
+    actionTypes.grow = function (critter) {
+        critter.energy += 5;
+        return true;
+    };
+
+    actionTypes.move = function (critter, vector, actionType) {
+        var dest = this.checkDestination(actionType, vector);
+        if (dest == null ||
+            critter.energy <= 1 ||
+            this.grid.get(dest) != null)
+            return false;
+        critter.energy -= 10;
+        this.grid.set(vector, null);
+        this.grid.set(dest, critter);
+        return true;
+    };
+
+    actionTypes.eat = function (critter, vector, actionType) {
+        var dest = this.checkDestination(actionType, vector);
+        var atDest = dest != null && this.grid.get(dest);
+        if (!atDest || atDest.energy == null)
+            return false;
+        critter.energy += atDest.energy;
+        this.grid.set(dest, null);
+        return true;
+    };
+
+    actionTypes.reproduce = function (critter, vector, actionType) {
+        var baby = elementFromChar(this.legend,
+            critter.originChar);
+        var dest = this.checkDestination(actionType, vector);
+        if (dest == null ||
+            critter.energy <= 2 * baby.energy ||
+            this.grid.get(dest) != null)
+            return false;
+        critter.energy -= 2 * baby.energy;
+        this.grid.set(dest, baby);
+        return true;
+    };
+
+    var ID_GENERATOR = 1;
+
+    function Plant() {
+        this.id = ID_GENERATOR;
+        ID_GENERATOR = ID_GENERATOR + 1;
+        this.energy = 3 + Math.floor(Math.random() * 10) * 4;
+    }
+
+    Plant.prototype.act = function (view) {
+        if (this.energy > 150) {
+            var space = view.find(EMPTY_FIELD);
+            if (space) {
+                return {type: "reproduce", direction: space};
+            }
+        }
+        if (this.energy < 200) {
+            return {type: "grow"};
+        }
+    };
+
+    function PlantEater() {
+        this.energy = 200;
+    }
+
+    PlantEater.prototype.act = function (view) {
+        var space = view.find(EMPTY_FIELD);
+        if (this.energy > 600 && space)
+            return {type: "reproduce", direction: space};
+        var plant = view.find("*");
+        if (plant) {
+            return {type: "eat", direction: plant};
+        }
+        if (space) {
+            return {type: "move", direction: space};
+        }
+    };
+
+    function SmartPlantEater() {
+        this.energy = 200;
+    }
+
+    SmartPlantEater.prototype.act = function (view) {
+        var space = view.find(EMPTY_FIELD);
+        if (this.energy > 600 && space)
+            return {type: "reproduce", direction: space};
+        var plantNumber = view.count("*");
+        if (plantNumber < 2) {
+            if (space) {
+                return {type: "move", direction: space};
+            }
+        }
+        var plant = view.find("*");
+        if (plant) {
+            return {type: "eat", direction: plant};
+        }
+    };
+
+    function Tiger() {
+        this.energy = 2000;
+    }
+
+    Tiger.prototype.act = function (view) {
+        var space = view.find(EMPTY_FIELD);
+        if (this.energy > 6000 && space)
+            return {type: "reproduce", direction: space};
+        var critter = view.find("O");
+        if (critter) {
+            return {type: "eat", direction: critter};
+        }
+        if (space) {
+            return {type: "move", direction: space};
+        }
+    }
+
+    function SmartTiger() {
+        this.energy = 2000;
+    }
+
+    SmartTiger.prototype.act = function (view) {
+        var space = view.find(EMPTY_FIELD);
+        if (this.energy > 60000 && space)
+            return {type: "reproduce", direction: space};
+        var critterNumber = view.count("O");
+        if (critterNumber < 2) {
+            if (space) {
+                return {type: "move", direction: space};
+            }
+        }
+        var critter = view.find("O");
+        if (critter) {
+            return {type: "eat", direction: critter};
+        }
+    };
+
+    animateWorld(new LifelikeWorld(
+        ["####################################################",
+            "#                 ####         ****              ###",
+            "#   *  $  ##                 ########       OO    ##",
+            "#   *    ##        O O                 ****       *#",
+            "#       ##*                        ##########     *#",
+            "#      ##***  *         ****                     **#",
+            "#* **  #  *  ***      #########                  **#",
+            "#* **  #      *               #   *              **#",
+            "#     ##              #   O   #  ***          ######",
+            "#*            $       #       #   *        O  #    #",
+            "#*                    #  ######                 ** #",
+            "###          ****          ***                  ** #",
+            "#       O                        $         O       #",
+            "#   *     ##  ##  ##  ##               ###      *  #",
+            "#   **         #              *       #####  O     #",
+            "##  **  O   O  #  #    ***  ***        ###      ** #",
+            "###               #   *****                    ****#",
+            "####################################################"],
+        {
+            "#": Wall,
+            "@": Tiger,
+            "$": SmartTiger,
+            "o": PlantEater,
+            "O": SmartPlantEater,
+            "*": Plant
+        }
+    ));
+
+
+</script>
+
+<div id="world"></div>
+<div id="statistics"></div>

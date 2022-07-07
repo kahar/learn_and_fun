@@ -1,5 +1,5 @@
 <script>
-    var EMPTY_FIELD = "&nbsp;&nbsp;";
+    const EMPTY_FIELD = "&nbsp;&nbsp;";
 
     function Vector(x, y) {
         this.x = x;
@@ -27,16 +27,16 @@
         this.space[vector.x + this.width * vector.y] = value;
     };
     Grid.prototype.forEach = function (f, context) {
-        for (var y = 0; y < this.height; y++) {
-            for (var x = 0; x < this.width; x++) {
-                var value = this.space[x + y * this.width];
+        for (let y = 0; y < this.height; y++) {
+            for (let x = 0; x < this.width; x++) {
+                const value = this.space[x + y * this.width];
                 if (value != null)
                     f.call(context, value, new Vector(x, y));
             }
         }
     };
 
-    var directions = {
+    const directions = {
         "n": new Vector(0, -1),
         "ne": new Vector(1, -1),
         "e": new Vector(1, 0),
@@ -51,23 +51,23 @@
         return array[Math.floor(Math.random() * array.length)];
     }
 
-    var directionNames = "n ne e se s sw w nw".split(" ");
+    const directionNames = "n ne e se s sw w nw".split(" ");
 
     function elementFromChar(legend, ch) {
-        if (ch == " ")
+        if (ch === " ")
             return null;
-        var element = new legend[ch]();
+        const element = new legend[ch]();
         element.originChar = ch;
         return element;
     }
 
     function World(map, legend) {
-        var grid = new Grid(map[0].length, map.length);
+        const grid = new Grid(map[0].length, map.length);
         this.grid = grid;
         this.legend = legend;
 
         map.forEach(function (line, y) {
-            for (var x = 0; x < line.length; x++)
+            for (let x = 0; x < line.length; x++)
                 grid.set(new Vector(x, y),
                     elementFromChar(legend, line[x]));
         });
@@ -82,18 +82,18 @@
     }
 
     World.prototype.turn = function () {
-        var acted = [];
+        const acted = [];
         this.grid.forEach(function (critter, vector) {
-            if (critter.act && acted.indexOf(critter) == -1) {
+            if (critter.act && acted.indexOf(critter) === -1) {
                 acted.push(critter);
                 this.letAct(critter, vector);
             }
         }, this);
     };
     World.prototype.letAct = function (critter, vector) {
-        var actionType = critter.act(new View(this, vector));
-        if (actionType && actionType.type == "move") {
-            var dest = this.checkDestination(actionType, vector);
+        const actionType = critter.act(new View(this, vector));
+        if (actionType && actionType.type === "move") {
+            const dest = this.checkDestination(actionType, vector);
             if (dest && this.grid.get(dest) == null) {
                 this.grid.set(vector, null);
                 this.grid.set(dest, critter);
@@ -103,17 +103,17 @@
 
     World.prototype.checkDestination = function (actionType, vector) {
         if (directions.hasOwnProperty(actionType.direction)) {
-            var dest = vector.plus(directions[actionType.direction]);
+            const dest = vector.plus(directions[actionType.direction]);
             if (this.grid.isInside(dest))
                 return dest;
         }
     };
 
     World.prototype.toString = function () {
-        var output = "";
-        for (var y = 0; y < this.grid.height; y++) {
-            for (var x = 0; x < this.grid.width; x++) {
-                var element = this.grid.get(new Vector(x, y));
+        let output = "";
+        for (let y = 0; y < this.grid.height; y++) {
+            for (let x = 0; x < this.grid.width; x++) {
+                const element = this.grid.get(new Vector(x, y));
                 output += charFromElement(element);
             }
             output += "\n<br>";
@@ -122,7 +122,7 @@
     };
 
     function dirPlus(dir, n) {
-        var index = directionNames.indexOf(dir);
+        const index = directionNames.indexOf(dir);
         return directionNames[(index + n + 8) % 8];
     }
 
@@ -132,27 +132,27 @@
     }
 
     View.prototype.look = function (dir) {
-        var target = this.vector.plus(directions[dir]);
+        const target = this.vector.plus(directions[dir]);
         if (this.world.grid.isInside(target))
             return charFromElement(this.world.grid.get(target));
         else
             return "#";
     };
     View.prototype.findAll = function (ch) {
-        var found = [];
-        for (var dir in directions)
-            if (this.look(dir) == ch)
+        const found = [];
+        for (const dir in directions)
+            if (this.look(dir) === ch)
                 found.push(dir);
         return found;
     };
     View.prototype.find = function (ch) {
-        var found = this.findAll(ch);
-        if (found.length == 0) return null;
+        const found = this.findAll(ch);
+        if (found.length === 0) return null;
         return randomElement(found);
     };
 
     View.prototype.count = function (ch) {
-        var found = this.findAll(ch);
+        const found = this.findAll(ch);
         return found.length;
     };
 
@@ -164,25 +164,24 @@
     }
 
     async function animateWorld(world) {
-        var i = 0;
-        var lastRoundWhenEvrythingLives = 0;
-        // for (var i = 0; i < 100000; i++) {
+        let i = 0;
+        let lastRoundWhenEverythingLives = 0;
         await sleep(50);
         while (true) {
             i++;
             world.turn();
-            var statistics = world.getStatistics()
-            if (!statistics.evrythingLives() && lastRoundWhenEvrythingLives === 0) {
-                lastRoundWhenEvrythingLives = i;
+            const statistics = world.getStatistics();
+            if (!statistics.everythingLives() && lastRoundWhenEverythingLives === 0) {
+                lastRoundWhenEverythingLives = i;
             }
             if (i % 100 === 0) {
                 await sleep(50);
-                var worldElement = document.getElementById("world");
+                const worldElement = document.getElementById("world");
                 worldElement.innerHTML = world.toString();
-                var statisticsElement = document.getElementById("statistics");
+                const statisticsElement = document.getElementById("statistics");
 
 
-                statisticsElement.innerHTML = "round " + i + "<br> lastRoundWhenEvrythingLives" + lastRoundWhenEvrythingLives + "<br>" + statistics.toString();
+                statisticsElement.innerHTML = "round " + i + "<br> lastRoundWhenEverythingLives" + lastRoundWhenEverythingLives + "<br>" + statistics.toString();
             }
 
 
@@ -191,22 +190,16 @@
 
     function WorldStatistics() {
         this.plants = 0;
-        // this.critters = 0;
         this.smartCritters = 0;
-        // this.tigers = 0;
         this.smartTigers = 0;
     }
 
     WorldStatistics.prototype.add = function (element) {
-        if (element.originChar == "*") {
+        if (element.originChar === "*") {
             this.plants++;
-            // } else if (element.originChar == "o") {
-            //     this.critters++;
-        } else if (element.originChar == "O") {
+        } else if (element.originChar === "O") {
             this.smartCritters++;
-            // } else if (element.originChar == "@") {
-            //     this.tigers++;
-        } else if (element.originChar == "$") {
+        } else if (element.originChar === "$") {
             this.smartTigers++;
         }
     }
@@ -216,8 +209,8 @@
     }
 
 
-    WorldStatistics.prototype.evrythingLives = function () {
-        return !(this.plants == 0 /*|| this.critters == 0 || this.tigers == 0*/ || this.smartTigers == 0 || this.smartCritters == 0);
+    WorldStatistics.prototype.everythingLives = function () {
+        return !(this.plants === 0 || this.smartTigers === 0 || this.smartCritters === 0);
     }
 
     function LifelikeWorld(map, legend) {
@@ -226,11 +219,11 @@
 
     LifelikeWorld.prototype = Object.create(World.prototype);
 
-    var actionTypes = Object.create(null);
+    const actionTypes = Object.create(null);
 
     LifelikeWorld.prototype.letAct = function (critter, vector) {
-        var actionType = critter.act(new View(this, vector));
-        var handled = actionType &&
+        const actionType = critter.act(new View(this, vector));
+        const handled = actionType &&
             actionType.type in actionTypes &&
             actionTypes[actionType.type].call(this, critter,
                 vector, actionType);
@@ -242,10 +235,10 @@
     };
 
     LifelikeWorld.prototype.getStatistics = function () {
-        var result = new WorldStatistics();
-        for (var w = 0; w < this.grid.width; w++) {
-            for (var h = 0; h < this.grid.height; h++) {
-                var element = this.grid.get(new Vector(w, h));
+        const result = new WorldStatistics();
+        for (let w = 0; w < this.grid.width; w++) {
+            for (let h = 0; h < this.grid.height; h++) {
+                const element = this.grid.get(new Vector(w, h));
                 if (element != null) {
                     result.add(element);
                 }
@@ -260,7 +253,7 @@
     };
 
     actionTypes.move = function (critter, vector, actionType) {
-        var dest = this.checkDestination(actionType, vector);
+        const dest = this.checkDestination(actionType, vector);
         if (dest == null ||
             critter.energy <= 1 ||
             this.grid.get(dest) != null)
@@ -272,8 +265,8 @@
     };
 
     actionTypes.eat = function (critter, vector, actionType) {
-        var dest = this.checkDestination(actionType, vector);
-        var atDest = dest != null && this.grid.get(dest);
+        const dest = this.checkDestination(actionType, vector);
+        const atDest = dest != null && this.grid.get(dest);
         if (!atDest || atDest.energy == null)
             return false;
         critter.energy += atDest.energy;
@@ -282,9 +275,9 @@
     };
 
     actionTypes.reproduce = function (critter, vector, actionType) {
-        var baby = elementFromChar(this.legend,
+        const baby = elementFromChar(this.legend,
             critter.originChar);
-        var dest = this.checkDestination(actionType, vector);
+        const dest = this.checkDestination(actionType, vector);
         if (dest == null ||
             critter.energy <= 2 * baby.energy ||
             this.grid.get(dest) != null)
@@ -294,7 +287,7 @@
         return true;
     };
 
-    var ID_GENERATOR = 1;
+    let ID_GENERATOR = 1;
 
     function Plant() {
         this.id = ID_GENERATOR;
@@ -304,7 +297,7 @@
 
     Plant.prototype.act = function (view) {
         if (this.energy > 150) {
-            var space = view.find(EMPTY_FIELD);
+            const space = view.find(EMPTY_FIELD);
             if (space) {
                 return {type: "reproduce", direction: space};
             }
@@ -319,10 +312,10 @@
     }
 
     PlantEater.prototype.act = function (view) {
-        var space = view.find(EMPTY_FIELD);
+        const space = view.find(EMPTY_FIELD);
         if (this.energy > 600 && space)
             return {type: "reproduce", direction: space};
-        var plant = view.find("*");
+        const plant = view.find("*");
         if (plant) {
             return {type: "eat", direction: plant};
         }
@@ -336,16 +329,16 @@
     }
 
     SmartPlantEater.prototype.act = function (view) {
-        var space = view.find(EMPTY_FIELD);
+        const space = view.find(EMPTY_FIELD);
         if (this.energy > 600 && space)
             return {type: "reproduce", direction: space};
-        var plantNumber = view.count("*");
+        const plantNumber = view.count("*");
         if (plantNumber < 2) {
             if (space) {
                 return {type: "move", direction: space};
             }
         }
-        var plant = view.find("*");
+        const plant = view.find("*");
         if (plant) {
             return {type: "eat", direction: plant};
         }
@@ -356,10 +349,10 @@
     }
 
     Tiger.prototype.act = function (view) {
-        var space = view.find(EMPTY_FIELD);
+        const space = view.find(EMPTY_FIELD);
         if (this.energy > 6000 && space)
             return {type: "reproduce", direction: space};
-        var critter = view.find("O");
+        const critter = view.find("O");
         if (critter) {
             return {type: "eat", direction: critter};
         }
@@ -373,16 +366,16 @@
     }
 
     SmartTiger.prototype.act = function (view) {
-        var space = view.find(EMPTY_FIELD);
+        const space = view.find(EMPTY_FIELD);
         if (this.energy > 60000 && space)
             return {type: "reproduce", direction: space};
-        var critterNumber = view.count("O");
+        const critterNumber = view.count("O");
         if (critterNumber < 2) {
             if (space) {
                 return {type: "move", direction: space};
             }
         }
-        var critter = view.find("O");
+        const critter = view.find("O");
         if (critter) {
             return {type: "eat", direction: critter};
         }

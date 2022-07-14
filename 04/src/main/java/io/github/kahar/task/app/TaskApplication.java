@@ -1,4 +1,4 @@
-package io.github.kahar.task;
+package io.github.kahar.task.app;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

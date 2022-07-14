@@ -1,4 +1,4 @@
-package io.github.kahar.task;
+package io.github.kahar.task.task;
 
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;

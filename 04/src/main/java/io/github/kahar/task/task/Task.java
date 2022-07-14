@@ -1,4 +1,4 @@
-package io.github.kahar.task;
+package io.github.kahar.task.task;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;

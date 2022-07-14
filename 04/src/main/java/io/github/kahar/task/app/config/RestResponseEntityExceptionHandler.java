@@ -1,7 +1,8 @@
-package io.github.kahar.task;
+package io.github.kahar.task.app.config;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.github.fge.jsonpatch.JsonPatchException;
+import io.github.kahar.task.app.error.ErrorDetail;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;

@@ -1,4 +1,4 @@
-package io.github.kahar.task;
+package io.github.kahar.task.app.error;
 
 import lombok.Builder;
 import lombok.Data;

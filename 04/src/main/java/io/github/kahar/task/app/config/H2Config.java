@@ -1,4 +1,4 @@
-package io.github.kahar.task;
+package io.github.kahar.task.app.config;
 
 import liquibase.integration.spring.SpringLiquibase;
 import org.h2.server.web.JakartaWebServlet;

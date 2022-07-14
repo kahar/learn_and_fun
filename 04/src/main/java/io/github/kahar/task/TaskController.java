@@ -8,7 +8,9 @@ import com.github.fge.jsonpatch.JsonPatchException;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.collections4.IterableUtils;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ResponseStatusException;
 
 @RestController
 @RequiredArgsConstructor
@@ -32,10 +34,8 @@ class TaskController {
 
     @PatchMapping("/task/{id}")
     public Task updateTask(@PathVariable long id, @RequestBody JsonPatch patch) throws JsonPatchException, JsonProcessingException {
-        /*TODO add some custom exception*/
-        /*TODO add global exception handler*/
-        /*TODO add exception handling*/
-        Task task = taskRepository.findById(id).orElseThrow(RuntimeException::new);
+        Task task = taskRepository.findById(id).orElseThrow(() -> new ResponseStatusException(
+                HttpStatus.NOT_FOUND, "Task not found by id:" + id));
         Task taskPatched = applyPatchToTask(patch, task);
         return taskRepository.save(taskPatched);
     }
@@ -49,6 +49,8 @@ class TaskController {
     @DeleteMapping("/task/{id}")
     @Transactional
     public void deleteTask(@PathVariable long id) {
+        Task task = taskRepository.findById(id).orElseThrow(() -> new ResponseStatusException(
+                HttpStatus.NOT_FOUND, "Task not found by id:" + id));
         taskRepository.deleteById(id);
     }
 }

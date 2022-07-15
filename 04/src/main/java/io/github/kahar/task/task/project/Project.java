@@ -1,4 +1,4 @@
-package io.github.kahar.task.task;
+package io.github.kahar.task.task.project;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -11,14 +11,11 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Builder
 @Entity
-class Task {
+class Project {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "title")
-    private String title;
-
-    @Column(name = "project_id")
-    private Long projectId;
+    @Column(name = "name")
+    private String name;
 }

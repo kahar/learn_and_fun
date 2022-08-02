@@ -1,0 +1,1 @@
+Just go to java.util.Iterator and to implementation i.e. java.util.ArrayList.Itr

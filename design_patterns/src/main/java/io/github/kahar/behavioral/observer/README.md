@@ -1,0 +1,1 @@
+This is example from refactoring.guru

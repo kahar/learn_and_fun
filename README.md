@@ -7,3 +7,4 @@ electronic_life_java - Project: Electronic Life - from Eloquent JavaScript 2nd e
 URLClassLoaderTest - Import class in dynamic way to classpath from jar  
 taskApp - Simple task app
 design_patterns - some design patterns implementation
+thread_pools - some check thread pools in IDE

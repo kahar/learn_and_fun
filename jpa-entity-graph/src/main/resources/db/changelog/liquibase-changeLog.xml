@@ -1,0 +1,55 @@
+<databaseChangeLog
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+   http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.4.xsd">
+
+    <changeSet author="kahar" id="create tables">
+        <createTable tableName="users">
+            <column name="id" type="BIGINT" autoIncrement="true">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="name" type="varchar(255)"/>
+            <column name="email" type="varchar(255)"/>
+        </createTable>
+        <createTable tableName="comment">
+            <column name="id" type="BIGINT" autoIncrement="true">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="reply" type="varchar(255)"/>
+            <column name="post_id" type="BIGINT"/>
+            <column name="user_id" type="BIGINT"/>
+        </createTable>
+        <createTable tableName="post">
+            <column name="id" type="BIGINT" autoIncrement="true">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="subject" type="varchar(255)"/>
+            <column name="user_id" type="BIGINT"/>
+        </createTable>
+
+        <addForeignKeyConstraint baseTableName="post" baseColumnNames="user_id"
+                                 constraintName="FK_POST_ON_USER"
+                                 referencedTableName="users" referencedColumnNames="id"/>
+        <addForeignKeyConstraint baseTableName="comment" baseColumnNames="user_id"
+                                 constraintName="FK_COMMENT_ON_USER"
+                                 referencedTableName="users" referencedColumnNames="id"/>
+        <addForeignKeyConstraint baseTableName="comment" baseColumnNames="post_id"
+                                 constraintName="FK_COMMENT_ON_POST"
+                                 referencedTableName="post" referencedColumnNames="id"/>
+    </changeSet>
+
+    <changeSet author="kahar" id="init tables">
+        <sql>
+            INSERT INTO USERS (ID,NAME,EMAIL) VALUES (1,'user1','user1@test.com');
+            INSERT INTO USERS (ID,NAME,EMAIL) VALUES (2,'user2','user2@test.com');
+            INSERT INTO USERS (ID,NAME,EMAIL) VALUES (3,'user3','user3@test.com');
+
+            INSERT INTO POST (ID,SUBJECT,USER_ID) VALUES (1,'JPA Entity Graph In Action',1);
+
+            INSERT INTO COMMENT (ID,REPLY,POST_ID,USER_ID) VALUES (1,'Nice !!',1,2);
+            INSERT INTO COMMENT (ID,REPLY,POST_ID,USER_ID) VALUES (2,'Cool !!',1,3);
+        </sql>
+    </changeSet>
+
+</databaseChangeLog>

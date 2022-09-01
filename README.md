@@ -8,3 +8,5 @@ URLClassLoaderTest - Import class in dynamic way to classpath from jar
 taskApp - Simple task app
 design_patterns - some design patterns implementation
 thread_pools - some check thread pools in IDE
+jpa-entity-graph - few approaches to problem with fetch eager/lazy
+java-features - check java features directly in IDE

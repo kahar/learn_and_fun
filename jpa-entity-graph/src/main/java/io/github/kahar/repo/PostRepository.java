@@ -17,11 +17,12 @@ public interface PostRepository extends JpaRepository<Post, Long>, PostEntityGra
     @Query(value = "SELECT p FROM Post p where p.id = :id")
     Post getByIdLazyWithEntityGraph(@Param("id") Long id);
 
-    @Query(value = "SELECT p FROM Post p " +
-            "left join fetch p.comments " +
-            "left join fetch p.user " +
-            "left join fetch p.comments.user " +
-            "where p.id = :id")
+    @Query(value = """
+            SELECT p FROM Post p
+            left join fetch p.comments
+            left join fetch p.user
+            left join fetch p.comments.user
+            where p.id = :id""")
     Post getByIdEager(@Param("id") Long id);
 
     @Query(value = "SELECT p FROM Post p where p.id = :id")

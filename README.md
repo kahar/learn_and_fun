@@ -9,4 +9,4 @@ taskApp - Simple task app
 design_patterns - some design patterns implementation
 thread_pools - some check thread pools in IDE
 jpa-entity-graph - few approaches to problem with fetch eager/lazy
-java-features - check java features directly in IDE
+java-features - check java (and not only) features directly in IDE

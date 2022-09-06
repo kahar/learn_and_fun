@@ -1,5 +1,10 @@
 clean, build and run whole project ( gradlew clean build bootRun  )
 
+to run dockerized version:
+gradlew clean build
+gradlew bootBuildImage --imageName=kahar.github.io/task-app
+docker run -p 8080:8080 -t kahar.github.io/task-app
+
 ### Documentation of the decision
 
 - There is hard decision to made: What should happen if user try to remove task from project to which this task was not
@@ -11,5 +16,4 @@ clean, build and run whole project ( gradlew clean build bootRun  )
 TODO list
 
 - Tests check in most cases only happy scenario, negative scenarios should be added, and also more positive scenarios
-- add docker
 - add property base tests

@@ -1,9 +1,13 @@
 clean, build and run whole project ( gradlew clean build bootRun  )
 
-to run dockerized version:
-gradlew clean build
-gradlew bootBuildImage --imageName=kahar.github.io/task-app
-docker run -p 8080:8080 -t kahar.github.io/task-app
+to run dockerized version with docker compose:  
+gradlew clean build  
+docker-compose up --build
+
+to run dockerized version:  
+gradlew clean build  
+gradlew bootBuildImage --imageName=kahar.github.io/task-app  
+docker run -p 8080:8080 -t kahar.github.io/task-app  
 
 ### Documentation of the decision
 

@@ -1,0 +1,8 @@
+version: '2'
+services:
+  task-app:
+    container_name: task-app
+    build: .
+    image: task-app:latest
+    ports:
+      - 8080:8080

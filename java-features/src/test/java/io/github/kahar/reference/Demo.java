@@ -35,7 +35,7 @@ public class Demo {
         SoftReference<User> softref = new SoftReference<User>(user);
 
         /*Phantom References: The objects which are being referenced by phantom references are eligible for garbage
-        collection. But, before removing them from the memory, JVM puts them in a queue called ‘reference queue’ .
+        collection. But, before removing them from the memory, JVM puts them in a queue called 'reference queue' .
         They are put in a reference queue after calling finalize() method on them.To create such references
         java.lang.ref.PhantomReference class is used.*/
         ReferenceQueue<User> refQueue = new ReferenceQueue<User>();

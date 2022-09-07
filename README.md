@@ -10,3 +10,4 @@ design_patterns - some design patterns implementation
 thread_pools - some check thread pools in IDE
 jpa-entity-graph - few approaches to problem with fetch eager/lazy
 java-features - check java (and not only) features directly in IDE
+webflux - spring-webflux from https://www.baeldung.com/spring-webflux

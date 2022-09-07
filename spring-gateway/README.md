@@ -1,0 +1,1 @@
+implementation according to https://spring.io/guides/gs/gateway/

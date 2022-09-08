@@ -1,5 +1,3 @@
-/.idea/
-/**/build/*
-/java-features/test
-/*/.idea/*
-/**/.gradle/*
+build/
+.idea/
+.gradle/

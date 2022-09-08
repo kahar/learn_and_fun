@@ -11,17 +11,6 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.*;
 
 public class ReflectionTest {
-    @Test
-    public void givenObject_whenGetsFieldNamesAtRuntime_thenCorrect() {
-        Object person = new Person();
-        Field[] fields = person.getClass().getDeclaredFields();
-
-        List<String> actualFieldNames = getFieldNames(fields);
-
-        assertTrue(Arrays.asList("name", "age")
-                .containsAll(actualFieldNames));
-    }
-
     private static List<String> getFieldNames(Field[] fields) {
         List<String> fieldNames = new ArrayList<>();
         for (Field field : fields)
@@ -34,6 +23,17 @@ public class ReflectionTest {
         for (Method method : methods)
             methodNames.add(method.getName());
         return methodNames;
+    }
+
+    @Test
+    public void givenObject_whenGetsFieldNamesAtRuntime_thenCorrect() {
+        Object person = new Person();
+        Field[] fields = person.getClass().getDeclaredFields();
+
+        List<String> actualFieldNames = getFieldNames(fields);
+
+        assertTrue(Arrays.asList("name", "age")
+                .containsAll(actualFieldNames));
     }
 
     @Test

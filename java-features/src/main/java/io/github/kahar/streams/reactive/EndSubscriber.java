@@ -4,11 +4,11 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.concurrent.Flow;
 
-import static java.util.concurrent.Flow.*;
+import static java.util.concurrent.Flow.Subscription;
 
 public class EndSubscriber<T> implements Flow.Subscriber<T> {
-    private Subscription subscription;
     public List<T> consumedElements = new LinkedList<>();
+    private Subscription subscription;
 
     @Override
     public void onSubscribe(Subscription subscription) {

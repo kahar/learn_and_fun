@@ -61,7 +61,7 @@ class EmployeeControllerIntegrationTest {
     }
 
     @Test
-    @WithMockUser(username = "admin", roles = { "ADMIN" })
+    @WithMockUser(username = "admin", roles = {"ADMIN"})
     void givenValidUser_whenUpdateEmployee_thenEmployeeUpdated() {
         Employee employee = new Employee("10", "Employee 10 Updated");
 

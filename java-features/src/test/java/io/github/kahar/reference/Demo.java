@@ -9,10 +9,6 @@ import java.lang.ref.WeakReference;
 
 public class Demo {
 
-    class User {
-        String name;
-    }
-
     @Test
     public void differentReferences() {
         /*So in brief: Soft references try to keep the reference. Weak references don’t try to keep the reference.
@@ -41,5 +37,9 @@ public class Demo {
         ReferenceQueue<User> refQueue = new ReferenceQueue<User>();
         PhantomReference<User> phantomRef = new PhantomReference<User>(user, refQueue);
         ;
+    }
+
+    class User {
+        String name;
     }
 }

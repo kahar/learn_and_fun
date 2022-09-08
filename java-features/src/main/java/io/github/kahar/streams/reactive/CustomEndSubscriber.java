@@ -5,12 +5,12 @@ import java.util.List;
 import java.util.concurrent.Flow;
 import java.util.concurrent.atomic.AtomicInteger;
 
-import static java.util.concurrent.Flow.*;
+import static java.util.concurrent.Flow.Subscription;
 
 public class CustomEndSubscriber<T> implements Flow.Subscriber<T> {
+    public List<T> consumedElements = new LinkedList<>();
     private AtomicInteger howMuchMessagesConsume;
     private Subscription subscription;
-    public List<T> consumedElements = new LinkedList<>();
 
     public CustomEndSubscriber(Integer howMuchMessagesConsume) {
         this.howMuchMessagesConsume

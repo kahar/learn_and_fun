@@ -24,9 +24,8 @@ public class ImageEditor {
     }
 
     private class EditorCanvas extends Canvas {
-        JFrame frame;
-
         private static final int PADDING = 10;
+        JFrame frame;
 
         EditorCanvas() {
             createFrame();

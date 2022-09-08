@@ -7,6 +7,7 @@ electronic_life_java - Project: Electronic Life - from Eloquent JavaScript 2nd e
 electronic_life_js - Project: Electronic Life - from Eloquent JavaScript 2nd edition   
 java-features - check java (and not only) features directly in IDE  
 jpa-entity-graph - few approaches to problem with fetch eager/lazy  
+service-discovery - from https://spring.io/guides/gs/service-registration-and-discovery/
 spring-gateway - from https://spring.io/guides/gs/gateway/
 taskApp - Simple task app  
 thread_pools - some check thread pools in IDE  

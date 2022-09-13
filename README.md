@@ -20,5 +20,6 @@ service-discovery - from https://spring.io/guides/gs/service-registration-and-di
 spring-cloud-config - from https://www.baeldung.com/spring-cloud-configuration
 spring-gateway - from https://spring.io/guides/gs/gateway/  
 webflux - spring-webflux from https://www.baeldung.com/spring-webflux  
+java-own-framework - inspiration from: https://github.com/Patresss/Java-Own-Framework---step-by-step  
 
 

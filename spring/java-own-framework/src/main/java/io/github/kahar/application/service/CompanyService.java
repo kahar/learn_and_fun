@@ -1,6 +1,6 @@
-package io.github.kahar.service;
+package io.github.kahar.application.service;
 
-import io.github.kahar.model.Company;
+import io.github.kahar.application.model.Company;
 
 public interface CompanyService {
 

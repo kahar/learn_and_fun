@@ -1,8 +1,8 @@
-package io.github.kahar;
+package io.github.kahar.application;
 
-import io.github.kahar.dao.CompanyDaoImpl;
-import io.github.kahar.model.Company;
-import io.github.kahar.service.CompanyServiceImpl;
+import io.github.kahar.application.dao.CompanyDaoImpl;
+import io.github.kahar.application.model.Company;
+import io.github.kahar.application.service.CompanyServiceImpl;
 
 public class Step1App {
 

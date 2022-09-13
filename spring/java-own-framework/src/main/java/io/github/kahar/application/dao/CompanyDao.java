@@ -1,6 +1,6 @@
-package io.github.kahar.dao;
+package io.github.kahar.application.dao;
 
-import io.github.kahar.model.Company;
+import io.github.kahar.application.model.Company;
 
 public interface CompanyDao {
 

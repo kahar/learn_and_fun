@@ -1,7 +1,7 @@
-package io.github.kahar.service;
+package io.github.kahar.application.service;
 
-import io.github.kahar.dao.CompanyDao;
-import io.github.kahar.model.Company;
+import io.github.kahar.application.dao.CompanyDao;
+import io.github.kahar.application.model.Company;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

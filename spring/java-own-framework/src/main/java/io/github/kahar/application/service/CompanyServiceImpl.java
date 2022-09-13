@@ -2,16 +2,13 @@ package io.github.kahar.application.service;
 
 import io.github.kahar.application.dao.CompanyDao;
 import io.github.kahar.application.model.Company;
-import io.github.kahar.framework.annotation.Autowired;
-import io.github.kahar.framework.annotation.Cacheable;
-import io.github.kahar.framework.annotation.Component;
-import io.github.kahar.framework.annotation.Transactional;
+import io.github.kahar.framework.annotation.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.UUID;
 
-@Component
+@Component(scope = Scope.SINGLETON)
 public class CompanyServiceImpl implements CompanyService {
 
     private static final Logger logger = LoggerFactory.getLogger(CompanyServiceImpl.class);
@@ -26,7 +23,6 @@ public class CompanyServiceImpl implements CompanyService {
     @Override
     public void createCompany(Company company) {
         logger.info("SERVICE:   START - create company");
-//         companyDao.createCompany(company);
         createWithTransaction(company);
         logger.info("SERVICE:   END - create company");
     }
@@ -37,6 +33,7 @@ public class CompanyServiceImpl implements CompanyService {
         return UUID.randomUUID().toString();
     }
 
+    @Override
     @Transactional
     public void createWithTransaction(Company company) {
         logger.info("SERVICE:   START - createWithTransaction");

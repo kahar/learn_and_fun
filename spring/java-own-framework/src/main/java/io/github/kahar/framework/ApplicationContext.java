@@ -6,7 +6,6 @@ import io.github.kahar.framework.annotation.Component;
 import io.github.kahar.framework.annotation.Scope;
 import io.github.kahar.framework.exception.FrameworkException;
 import org.reflections.Reflections;
-import org.reflections.Reflections;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Proxy;
@@ -34,6 +33,7 @@ public class ApplicationContext {
         if (!clazz.isInterface()) {
             throw new FrameworkException("Class " + clazz.getName() + " should be an interface");
         }
+
         final Class<T> implementation = findImplementationByInterface(clazz);
 
         final Component annotation = implementation.getAnnotation(Component.class);
@@ -44,6 +44,7 @@ public class ApplicationContext {
         if (annotation.scope() == Scope.SINGLETON) {
             return (T) singletonBeans.computeIfAbsent(clazz, it -> createBean(clazz, implementation));
         }
+
         return createBean(clazz, implementation);
     }
 
@@ -56,7 +57,7 @@ public class ApplicationContext {
             final Object proxy = Proxy.newProxyInstance(
                     ApplicationContext.class.getClassLoader(),
                     new Class[]{clazz},
-                    new ProxyHandler(bean));
+                    new ProxyInvocationHandler(bean));
             return clazz.cast(proxy);
         } catch (FrameworkException e) {
             throw e;

@@ -3,18 +3,23 @@ package io.github.kahar.framework;
 
 import io.github.kahar.framework.annotation.Autowired;
 import io.github.kahar.framework.annotation.Component;
+import io.github.kahar.framework.annotation.Scope;
 import io.github.kahar.framework.exception.FrameworkException;
+import org.reflections.Reflections;
 import org.reflections.Reflections;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Proxy;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Collectors;
 
 public class ApplicationContext {
 
+    private final Map<Class<?>, Object> singletonBeans = new ConcurrentHashMap<>();
     private final Set<Class<?>> componentBeans;
 
     public ApplicationContext(Package packageContext) {
@@ -24,13 +29,21 @@ public class ApplicationContext {
                 .collect(Collectors.toSet());
     }
 
+    @SuppressWarnings("unchecked")
     public <T> T getBean(Class<T> clazz) {
         if (!clazz.isInterface()) {
             throw new FrameworkException("Class " + clazz.getName() + " should be an interface");
         }
-
         final Class<T> implementation = findImplementationByInterface(clazz);
 
+        final Component annotation = implementation.getAnnotation(Component.class);
+        if (annotation == null) {
+            throw new FrameworkException("Class " + implementation.getName() + " should be a Component");
+        }
+
+        if (annotation.scope() == Scope.SINGLETON) {
+            return (T) singletonBeans.computeIfAbsent(clazz, it -> createBean(clazz, implementation));
+        }
         return createBean(clazz, implementation);
     }
 

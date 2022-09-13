@@ -1,9 +1,17 @@
 package io.github.kahar.framework;
 
+import io.github.kahar.framework.annotation.Transactional;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.lang.reflect.InvocationHandler;
+import java.lang.reflect.Method;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import java.lang.reflect.InvocationHandler;
+import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
 public class ProxyHandler implements InvocationHandler {
@@ -17,6 +25,13 @@ public class ProxyHandler implements InvocationHandler {
 
     @Override
     public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
+        if (isTransactional(method)) {
+            return handleTransaction(method, args);
+        }
+        return method.invoke(objectToHandle, args);
+    }
+
+    private Object handleTransaction(Method method, Object[] args) throws IllegalAccessException, InvocationTargetException {
         try {
             beginTransaction();
             final Object invoke = method.invoke(objectToHandle, args);
@@ -25,6 +40,14 @@ public class ProxyHandler implements InvocationHandler {
         } catch (Exception e) {
             rollbackTransaction();
             throw e;
+        }
+    }
+
+    private boolean isTransactional(Method method) {
+        try {
+            return objectToHandle.getClass().getMethod(method.getName(), method.getParameterTypes()).isAnnotationPresent(Transactional.class);
+        } catch (NoSuchMethodException e) {
+            return false;
         }
     }
 

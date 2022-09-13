@@ -14,12 +14,15 @@ java-features - check java (and not only) features directly in IDE
 thread_pools - some check thread pools in IDE  
 URLClassLoaderTest - Import class in dynamic way to classpath from jar
 
+**other**  
+togglz - inspiration from https://github.com/cezarysanecki/togglz-example and https://devcezz.pl/2022/06/20/wielkie-mozliwosci-malej-biblioteki-togglz/?utm_source=rss&utm_source=jvm-bloggers.com&utm_medium=rss&utm_medium=link&utm_campaign=wielkie-mozliwosci-malej-biblioteki-togglzs
+
 **spring**  
 jpa-entity-graph - few approaches to problem with fetch eager/lazy   
 service-discovery - from https://spring.io/guides/gs/service-registration-and-discovery/  
 spring-cloud-config - from https://www.baeldung.com/spring-cloud-configuration
 spring-gateway - from https://spring.io/guides/gs/gateway/  
 webflux - spring-webflux from https://www.baeldung.com/spring-webflux  
-java-own-framework - inspiration from: https://github.com/Patresss/Java-Own-Framework---step-by-step  
+java-own-framework - inspiration from: https://github.com/Patresss/Java-Own-Framework---step-by-step
 
 

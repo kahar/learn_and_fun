@@ -15,6 +15,7 @@ thread_pools - some check thread pools in IDE
 URLClassLoaderTest - Import class in dynamic way to classpath from jar
 
 **other**  
+java-own-framework - inspiration from: https://github.com/Patresss/Java-Own-Framework---step-by-step
 togglz - inspiration from https://github.com/cezarysanecki/togglz-example and https://devcezz.pl/2022/06/20/wielkie-mozliwosci-malej-biblioteki-togglz/?utm_source=rss&utm_source=jvm-bloggers.com&utm_medium=rss&utm_medium=link&utm_campaign=wielkie-mozliwosci-malej-biblioteki-togglzs
 
 **spring**  
@@ -23,6 +24,5 @@ service-discovery - from https://spring.io/guides/gs/service-registration-and-di
 spring-cloud-config - from https://www.baeldung.com/spring-cloud-configuration
 spring-gateway - from https://spring.io/guides/gs/gateway/  
 webflux - spring-webflux from https://www.baeldung.com/spring-webflux  
-java-own-framework - inspiration from: https://github.com/Patresss/Java-Own-Framework---step-by-step
 
 

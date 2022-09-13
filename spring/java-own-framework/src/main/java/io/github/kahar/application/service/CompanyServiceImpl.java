@@ -2,9 +2,11 @@ package io.github.kahar.application.service;
 
 import io.github.kahar.application.dao.CompanyDao;
 import io.github.kahar.application.model.Company;
+import io.github.kahar.framework.annotation.Component;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+@Component
 public class CompanyServiceImpl implements CompanyService {
 
     private static final Logger logger = LoggerFactory.getLogger(CompanyServiceImpl.class);

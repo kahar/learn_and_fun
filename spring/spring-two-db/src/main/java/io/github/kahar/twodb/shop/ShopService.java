@@ -4,6 +4,8 @@ import io.github.kahar.twodb.shop.first.Product;
 import io.github.kahar.twodb.shop.first.ProductRepository;
 import io.github.kahar.twodb.shop.second.ProductAmount;
 import io.github.kahar.twodb.shop.second.ProductAmountRepository;
+import io.github.kahar.twodb.shop.third.Admin;
+import io.github.kahar.twodb.shop.third.AdminRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -17,9 +19,14 @@ public class ShopService {
     private final ProductRepository productRepository;
     private final ProductAmountRepository productAmountRepository;
 
-    public ShopService(ProductRepository productRepository, ProductAmountRepository productAmountRepository) {
+    private final AdminRepository adminRepository;
+
+    public ShopService(ProductRepository productRepository,
+                       ProductAmountRepository productAmountRepository,
+                       AdminRepository adminRepository) {
         this.productRepository = productRepository;
         this.productAmountRepository = productAmountRepository;
+        this.adminRepository = adminRepository;
     }
 
     public List<Object> getProducts() {
@@ -41,5 +48,14 @@ public class ShopService {
     public void increaseAmountByOne(Long productId) {
         productAmountRepository.findByProductId(productId)
                 .ifPresent(ProductAmount::increaseByOne);
+    }
+
+    public List<Admin> getAdmin() {
+        return adminRepository.findAll();
+
+    }
+
+    public void addAdmin(String firstName, String lastName) {
+        adminRepository.save(Admin.builder().firstName(firstName).lastName(lastName).build());
     }
 }

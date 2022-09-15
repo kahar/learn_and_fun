@@ -1,8 +1,8 @@
 package io.github.kahar.twodb.shop;
 
+import io.github.kahar.twodb.shop.third.Admin;
 import org.springframework.web.bind.annotation.*;
 
-import java.math.BigDecimal;
 import java.util.List;
 
 @RestController
@@ -29,10 +29,14 @@ class ShopController {
     void increaseAmountByOne(@RequestBody IncreaseProductAmountRequest request) {
         shopService.increaseAmountByOne(request.productId());
     }
-}
 
-record AddProductRequest(String name, BigDecimal price, String description) {
-}
+    @PostMapping("/admin")
+    void addAdmin(@RequestBody AddAdmin request) {
+        shopService.addAdmin(request.firstName(), request.lastName());
+    }
 
-record IncreaseProductAmountRequest(Long productId) {
+    @GetMapping("/admin")
+    List<Admin> getAdmin() {
+        return shopService.getAdmin();
+    }
 }

@@ -1,0 +1,25 @@
+dependencies {
+    implementation "org.springframework.boot:spring-boot-starter-actuator"
+    implementation "org.springframework.boot:spring-boot-starter-data-jpa"
+    implementation "org.springframework.boot:spring-boot-starter-web"
+    implementation "org.springframework.boot:spring-boot-starter-validation"
+    implementation "org.springframework.cloud:spring-cloud-starter-config:${springCloudVersion}"
+    implementation "org.springframework.cloud:spring-cloud-starter-netflix-eureka-client:${springCloudVersion}"
+    implementation "org.springframework.cloud:spring-cloud-starter-sleuth:${springCloudVersion}"
+    implementation "org.springframework.cloud:spring-cloud-sleuth-zipkin:${springCloudVersion}"
+
+    implementation "org.hsqldb:hsqldb:${hsqldbVersion}"
+
+    testImplementation "org.springframework.boot:spring-boot-starter-test"
+    testImplementation "org.junit.jupiter:junit-jupiter-api:${junitVersion}"
+    testRuntimeOnly "org.junit.jupiter:junit-jupiter-engine:${junitVersion}"
+
+    implementation 'org.jolokia:jolokia-core:1.7.1'
+    implementation 'io.micrometer:micrometer-registry-prometheus:1.9.4'
+    implementation 'io.github.resilience4j:resilience4j-micrometer:1.7.1'
+
+}
+
+bootBuildImage {
+    imageName = 'io-github-kahar/' + rootProject.name + '-' + project.name
+}

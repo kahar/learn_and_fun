@@ -1,0 +1,11 @@
+dependencies {
+    implementation "org.springframework.cloud:spring-cloud-config-server:${springCloudVersion}"
+
+    testImplementation "org.springframework.boot:spring-boot-starter-test"
+    testImplementation "org.junit.jupiter:junit-jupiter-api:${junitVersion}"
+    testRuntimeOnly "org.junit.jupiter:junit-jupiter-engine:${junitVersion}"
+}
+
+bootBuildImage {
+    imageName = 'io-github-kahar/' + rootProject.name + '-' + project.name
+}

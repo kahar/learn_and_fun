@@ -1,0 +1,102 @@
+version: '2'
+
+services:
+  config-server:
+    image: io-github-kahar/petclinic-config-server
+    container_name: config-server
+    #build: docker/Dockerfile
+    #    mem_limit: 512M
+    environment:
+      - "SPRING_PROFILES_ACTIVE=docker"
+    ports:
+      - 8888:8888
+
+  discovery-server:
+    image: io-github-kahar/petclinic-discovery-server
+    container_name: discovery-server
+    environment:
+      - "SPRING_PROFILES_ACTIVE=docker"
+    depends_on:
+      - config-server
+    ports:
+      - 8761:8761
+
+  customer-service:
+    image: io-github-kahar/petclinic-customer-service
+    container_name: customer-service
+    environment:
+      - "SPRING_PROFILES_ACTIVE=docker"
+    depends_on:
+      - config-server
+      - discovery-server
+    ports:
+      - 8081:8081
+
+  visit-service:
+    image: io-github-kahar/petclinic-visit-service
+    container_name: visit-service
+    environment:
+      - "SPRING_PROFILES_ACTIVE=docker"
+    depends_on:
+      - config-server
+      - discovery-server
+    ports:
+      - 8082:8082
+
+  vet-service:
+    image: io-github-kahar/petclinic-vet-service
+    container_name: vet-service
+    environment:
+      - "SPRING_PROFILES_ACTIVE=docker"
+    depends_on:
+      - config-server
+      - discovery-server
+    ports:
+      - 8083:8083
+
+  api-gateway:
+    image: io-github-kahar/petclinic-api-gateway
+    container_name: api-gateway
+    environment:
+      - "SPRING_PROFILES_ACTIVE=docker"
+    depends_on:
+      - config-server
+      - discovery-server
+      - visit-service
+      - vet-service
+      - customer-service
+    ports:
+      - 8080:8080
+  #
+  tracing-server:
+    image: openzipkin/zipkin
+    container_name: tracing-server
+    environment:
+      - JAVA_OPTS=-XX:+UnlockExperimentalVMOptions -Djava.security.egd=file:/dev/./urandom
+    ports:
+      - 9411:9411
+
+  admin-server:
+    image: io-github-kahar/petclinic-admin-server
+    container_name: admin-server
+    environment:
+      - "SPRING_PROFILES_ACTIVE=docker"
+    depends_on:
+      - config-server
+      - discovery-server
+    ports:
+      - 9090:9090
+
+  ## Grafana / Prometheus
+
+  grafana-server:
+    build: ./docker/grafana
+    container_name: grafana-server
+    ports:
+      - 3000:3000
+
+  prometheus-server:
+    build: ./docker/prometheus
+    container_name: prometheus-server
+    ports:
+      - 9091:9090

@@ -1,0 +1,64 @@
+#spring:
+#  thymeleaf:
+#    mode: HTML
+#  application:
+#    name: petclinic-api-gateway
+#  config:
+#    import: configserver:http://config-server:8888
+#  cloud:
+#    gateway:
+#      routes:
+#        - id: petclinic-vet-service
+#          uri: lb://petclinic-vet-service
+#          predicates:
+#            - Path=/api/vet/**
+#          filters:
+#            - StripPrefix=2
+#        - id: petclinic-visit-service
+#          uri: lb://petclinic-visit-service
+#          predicates:
+#            - Path=/api/visit/**
+#          filters:
+#            - StripPrefix=2
+#        - id: petclinic-customer-service
+#          uri: lb://petclinic-customer-service
+#          predicates:
+#            - Path=/api/customer/**
+#          filters:
+#            - StripPrefix=2
+#
+#
+
+spring:
+  application:
+    name: petclinic-api-gateway
+  config:
+    import: optional:configserver:${CONFIG_SERVER_URL:http://localhost:8888/}
+  cloud:
+    gateway:
+      routes:
+        - id: vets-service
+          uri: lb://petclinic-vet-service
+          predicates:
+            - Path=/api/vet/**
+          filters:
+            - StripPrefix=2
+        - id: visits-service
+          uri: lb://petclinic-visit-service
+          predicates:
+            - Path=/api/visit/**
+          filters:
+            - StripPrefix=2
+        - id: customers-service
+          uri: lb://petclinic-customer-service
+          predicates:
+            - Path=/api/customer/**
+          filters:
+            - StripPrefix=2
+
+---
+spring:
+  config:
+    activate:
+      on-profile: docker
+    import: configserver:http://config-server:8888

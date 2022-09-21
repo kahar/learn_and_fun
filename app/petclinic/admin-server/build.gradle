@@ -1,0 +1,15 @@
+dependencies {
+    implementation "javax.servlet:javax.servlet-api:${javaxServletApi}"
+    implementation "de.codecentric:spring-boot-admin-starter-server:${adminVersion}"
+    implementation "de.codecentric:spring-boot-admin-server-ui:${adminVersion}"
+
+    implementation "org.springframework.cloud:spring-cloud-starter-config:${springCloudVersion}"
+    implementation "org.springframework.cloud:spring-cloud-starter-netflix-eureka-server:${springCloudVersion}"
+
+    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.8.1'
+    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.8.1'
+}
+
+bootBuildImage {
+    imageName = 'io-github-kahar/' + rootProject.name + '-' + project.name
+}

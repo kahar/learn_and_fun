@@ -1,0 +1,16 @@
+pluginManagement {
+    repositories {
+        maven { url 'https://repo.spring.io/milestone' }
+        maven { url 'https://repo.spring.io/snapshot' }
+        gradlePluginPortal()
+    }
+}
+rootProject.name = 'petclinic'
+include 'api-gateway'
+include 'discovery-server'
+include 'config-server'
+include 'customer-service'
+include 'vet-service'
+include 'visit-service'
+include 'admin-server'
+

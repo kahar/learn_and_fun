@@ -27,3 +27,5 @@ Thisngs TODO for future:
 - rewrite api gateway to use events
 - rewrite java code
 - rewrite frontend
+- create own panel in graphana / analyze existing ( according to https://www.youtube.com/watch?v=ypF30j6ni64 )
+- create docker which will perform CI / CD

@@ -26,22 +26,11 @@ allprojects {
     }
 }
 
-subprojects {
-
-    apply plugin: 'org.springframework.boot'
-    apply plugin: 'io.spring.dependency-management'
-    apply plugin: 'io.freefair.lombok'
-    apply plugin: 'java'
-
-    configurations {
-        compileOnly {
-            extendsFrom annotationProcessor
-        }
-    }
-
-    tasks.named('test') {
-        useJUnitPlatform()
-    }
+dependencies {
+    implementation project(':C4-common')
+    implementation project(':api-gateway')
+    implementation 'com.structurizr:structurizr-plantuml:1.6.3'
+    implementation 'com.structurizr:structurizr-core:1.15.2'
 }
 
 bootJar {

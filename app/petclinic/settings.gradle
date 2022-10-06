@@ -13,4 +13,5 @@ include 'customer-service'
 include 'vet-service'
 include 'visit-service'
 include 'admin-server'
+include 'C4-common'
 

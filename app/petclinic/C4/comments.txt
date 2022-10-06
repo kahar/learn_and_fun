@@ -1,0 +1,1 @@
+C2-pet-clinic-system.png has two unconnected software systems to point out that they exist and are important. Adding all the relations to containers would blur the picture in my opinion.

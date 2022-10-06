@@ -1,0 +1,239 @@
+@startuml(id=SystemContext)
+title Pet clinic system - System Context
+caption Context diagram of the veterinary system
+
+skinparam {
+  shadowing false
+  arrowFontSize 10
+  defaultTextAlignment center
+  wrapWidth 200
+  maxMessageSize 100
+}
+hide stereotype
+skinparam rectangle<<1>> {
+  BackgroundColor #dddddd
+  FontColor #000000
+  BorderColor #9a9a9a
+}
+skinparam rectangle<<2>> {
+  BackgroundColor #dddddd
+  FontColor #000000
+  BorderColor #9a9a9a
+}
+skinparam rectangle<<3>> {
+  BackgroundColor #dddddd
+  FontColor #000000
+  BorderColor #9a9a9a
+}
+skinparam rectangle<<4>> {
+  BackgroundColor #dddddd
+  FontColor #000000
+  BorderColor #9a9a9a
+}
+skinparam rectangle<<5>> {
+  BackgroundColor #dddddd
+  FontColor #000000
+  BorderColor #9a9a9a
+}
+rectangle "==Pet owner\n<size:10>[Person]</size>\n\nPet owner, can have zero, one or more animals" <<1>> as 1
+rectangle "==Receptionist\n<size:10>[Person]</size>\n\nHandle Pet owner communications" <<2>> as 2
+rectangle "==External microservices / infrastructure system\n<size:10>[Software System]</size>\n\nIt allows to manage microservices / aggregate logs etc." <<5>> as 5
+package "Petclinic project" {
+  rectangle "==Microservices / infrastructure system\n<size:10>[Software System]</size>\n\nIt allows to manage microservices / aggregate logs etc." <<4>> as 4
+  rectangle "==Pet clinic system\n<size:10>[Software System]</size>\n\nIt allows you to arrange visits to the vet" <<3>> as 3
+}
+5 .[#707070,thickness=2].> 3 : "Monitor system state"
+4 .[#707070,thickness=2].> 3 : "Monitor system state"
+3 .[#707070,thickness=2].> 5 : "Get microservice data"
+3 .[#707070,thickness=2].> 4 : "Get microservice data"
+1 .[#707070,thickness=2].> 2 : "Call, email, direct visit"
+2 .[#707070,thickness=2].> 3 : "Use"
+@enduml@startuml(id=internal_microservices_Containers)
+title Microservices / infrastructure system - Containers
+caption Diagram of microservices / infrastructure system
+
+skinparam {
+  shadowing false
+  arrowFontSize 10
+  defaultTextAlignment center
+  wrapWidth 200
+  maxMessageSize 100
+}
+hide stereotype
+skinparam rectangle<<3>> {
+  BackgroundColor #dddddd
+  FontColor #000000
+  BorderColor #9a9a9a
+}
+skinparam rectangle<<6>> {
+  BackgroundColor #dddddd
+  FontColor #000000
+  BorderColor #9a9a9a
+}
+skinparam rectangle<<7>> {
+  BackgroundColor #dddddd
+  FontColor #000000
+  BorderColor #9a9a9a
+}
+skinparam rectangle<<8>> {
+  BackgroundColor #dddddd
+  FontColor #000000
+  BorderColor #9a9a9a
+}
+skinparam rectangle<<9>> {
+  BackgroundColor #dddddd
+  FontColor #000000
+  BorderColor #9a9a9a
+}
+skinparam rectangle<<10>> {
+  BackgroundColor #dddddd
+  FontColor #000000
+  BorderColor #9a9a9a
+}
+rectangle "==Pet clinic system\n<size:10>[Software System]</size>\n\nIt allows you to arrange visits to the vet" <<3>> as 3
+package "Microservices / infrastructure system\n[Software System]" {
+  rectangle "==Admin server\n<size:10>[Container: Java, Spring, Spring cloud]</size>\n\nBeautiful dashboard for admin." <<6>> as 6
+  rectangle "==Config server\n<size:10>[Container: Java, Spring, Spring cloud]</size>\n\nServes configuration. Should interact with every microservice." <<7>> as 7
+  rectangle "==Discovery server\n<size:10>[Container: Java, Spring, Spring cloud]</size>\n\nIt allows you to register and discover microservices. Should interact with every microservice." <<8>> as 8
+  rectangle "==Grafana server\n<size:10>[Container]</size>\n\nDisplay logs. Should interact with every microservice." <<9>> as 9
+  rectangle "==prometheus server\n<size:10>[Container]</size>\n\nAggregate logs. Should interact with every microservice." <<10>> as 10
+}
+6 .[#707070,thickness=2].> 3 : "download and display state"
+9 .[#707070,thickness=2].> 10 : "get logs"
+3 .[#707070,thickness=2].> 7 : "download configuration"
+3 .[#707070,thickness=2].> 8 : "register services"
+3 .[#707070,thickness=2].> 8 : "discover other services"
+3 .[#707070,thickness=2].> 10 : "send logs"
+@enduml@startuml(id=petclinic_Containers)
+title Pet clinic system - Containers
+caption Diagram of containers of the veterinary system
+
+skinparam {
+  shadowing false
+  arrowFontSize 10
+  defaultTextAlignment center
+  wrapWidth 200
+  maxMessageSize 100
+}
+hide stereotype
+skinparam rectangle<<11>> {
+  BackgroundColor #dddddd
+  FontColor #000000
+  BorderColor #9a9a9a
+}
+skinparam rectangle<<1>> {
+  BackgroundColor #dddddd
+  FontColor #000000
+  BorderColor #9a9a9a
+}
+skinparam rectangle<<12>> {
+  BackgroundColor #dddddd
+  FontColor #000000
+  BorderColor #9a9a9a
+}
+skinparam rectangle<<2>> {
+  BackgroundColor #dddddd
+  FontColor #000000
+  BorderColor #9a9a9a
+}
+skinparam rectangle<<13>> {
+  BackgroundColor #dddddd
+  FontColor #000000
+  BorderColor #9a9a9a
+}
+skinparam rectangle<<14>> {
+  BackgroundColor #dddddd
+  FontColor #000000
+  BorderColor #9a9a9a
+}
+skinparam rectangle<<4>> {
+  BackgroundColor #dddddd
+  FontColor #000000
+  BorderColor #9a9a9a
+}
+skinparam rectangle<<5>> {
+  BackgroundColor #dddddd
+  FontColor #000000
+  BorderColor #9a9a9a
+}
+rectangle "==External microservices / infrastructure system\n<size:10>[Software System]</size>\n\nIt allows to manage microservices / aggregate logs etc." <<5>> as 5
+rectangle "==Microservices / infrastructure system\n<size:10>[Software System]</size>\n\nIt allows to manage microservices / aggregate logs etc." <<4>> as 4
+rectangle "==Pet owner\n<size:10>[Person]</size>\n\nPet owner, can have zero, one or more animals" <<1>> as 1
+rectangle "==Receptionist\n<size:10>[Person]</size>\n\nHandle Pet owner communications" <<2>> as 2
+package "Pet clinic system\n[Software System]" {
+  rectangle "==Api gateway\n<size:10>[Container: Java, Spring, Spring cloud, Angular]</size>\n\nHandles http request and serves as api gateway" <<11>> as 11
+  rectangle "==Customer service\n<size:10>[Container: Java, H2, Spring, Spring cloud]</size>\n\nStores and shares data about pets and pet owners" <<14>> as 14
+  rectangle "==Vet service\n<size:10>[Container: Java, H2, Spring, Spring cloud]</size>\n\nStores and shares data about vets" <<13>> as 13
+  rectangle "==Visit service\n<size:10>[Container: Java, H2, Spring, Spring cloud]</size>\n\nIt allows you to make an visit" <<12>> as 12
+}
+1 .[#707070,thickness=2].> 2 : "Call, email, direct visit"
+@enduml@startuml(id=Components)
+title Pet clinic system - Api gateway - Components
+caption Component diagram for the api gateway
+
+skinparam {
+  shadowing false
+  arrowFontSize 10
+  defaultTextAlignment center
+  wrapWidth 200
+  maxMessageSize 100
+}
+hide stereotype
+skinparam rectangle<<12>> {
+  BackgroundColor #dddddd
+  FontColor #000000
+  BorderColor #9a9a9a
+}
+skinparam rectangle<<13>> {
+  BackgroundColor #dddddd
+  FontColor #000000
+  BorderColor #9a9a9a
+}
+skinparam rectangle<<14>> {
+  BackgroundColor #dddddd
+  FontColor #000000
+  BorderColor #9a9a9a
+}
+skinparam rectangle<<6>> {
+  BackgroundColor #dddddd
+  FontColor #000000
+  BorderColor #9a9a9a
+}
+skinparam rectangle<<7>> {
+  BackgroundColor #dddddd
+  FontColor #000000
+  BorderColor #9a9a9a
+}
+skinparam rectangle<<8>> {
+  BackgroundColor #dddddd
+  FontColor #000000
+  BorderColor #9a9a9a
+}
+skinparam rectangle<<31>> {
+  BackgroundColor #dddddd
+  FontColor #000000
+  BorderColor #9a9a9a
+}
+skinparam rectangle<<10>> {
+  BackgroundColor #dddddd
+  FontColor #000000
+  BorderColor #9a9a9a
+}
+rectangle "==Admin server\n<size:10>[Container: Java, Spring, Spring cloud]</size>\n\nBeautiful dashboard for admin." <<6>> as 6
+rectangle "==Config server\n<size:10>[Container: Java, Spring, Spring cloud]</size>\n\nServes configuration. Should interact with every microservice." <<7>> as 7
+rectangle "==Customer service\n<size:10>[Container: Java, H2, Spring, Spring cloud]</size>\n\nStores and shares data about pets and pet owners" <<14>> as 14
+rectangle "==Discovery server\n<size:10>[Container: Java, Spring, Spring cloud]</size>\n\nIt allows you to register and discover microservices. Should interact with every microservice." <<8>> as 8
+rectangle "==Vet service\n<size:10>[Container: Java, H2, Spring, Spring cloud]</size>\n\nStores and shares data about vets" <<13>> as 13
+rectangle "==Visit service\n<size:10>[Container: Java, H2, Spring, Spring cloud]</size>\n\nIt allows you to make an visit" <<12>> as 12
+rectangle "==prometheus server\n<size:10>[Container]</size>\n\nAggregate logs. Should interact with every microservice." <<10>> as 10
+package "Api gateway\n[Container: Java, Spring, Spring cloud, Angular]" {
+  rectangle "==Core\n<size:10>[Component]</size>\n\nCore logic" <<31>> as 31
+}
+6 .[#707070,thickness=2].> 31 : "display state"
+31 .[#707070,thickness=2].> 7 : "Download config"
+31 .[#707070,thickness=2].> 14 : "CRUD pets, pet owners\n<size:8>[HTTP]</size>"
+31 .[#707070,thickness=2].> 8 : "Discover / register microservices"
+31 .[#707070,thickness=2].> 13 : "CRUD vets\n<size:8>[HTTP]</size>"
+31 .[#707070,thickness=2].> 12 : "CRUD visits\n<size:8>[HTTP]</size>"
+10 .[#707070,thickness=2].> 31 : "get logs"
+@enduml

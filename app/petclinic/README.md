@@ -21,6 +21,9 @@ docker-compose up -d
 Things, which was not present in original project:  
 http://localhost:8761/eurekawebui
 
+To generate C4 schema, run C4Generator. Split output and use http://www.plantuml.com to generate images. Result is
+visible in C4 directory.
+
 Thisngs TODO for future:
 
 - learn every element of api gateway

@@ -4,6 +4,7 @@ In this repository there will be many small projects to play, learn or record so
 contents. Some folders will have their own README files
 
 **app**  
+ai_survivors - my try with neural network
 electronic_life_java - Project: Electronic Life - from Eloquent JavaScript 2nd edition - but in Java   
 electronic_life_js - Project: Electronic Life - from Eloquent JavaScript 2nd edition   
 petclinic - spring petclinic project

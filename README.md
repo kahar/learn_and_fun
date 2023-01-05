@@ -18,6 +18,7 @@ URLClassLoaderTest - Import class in dynamic way to classpath from jar
 
 **other**  
 java-own-framework - inspiration from: https://github.com/Patresss/Java-Own-Framework---step-by-step
+other-plain-java - currently contains only example how to build aggregate from events  
 togglz - inspiration from https://github.com/cezarysanecki/togglz-example and https://devcezz.pl/2022/06/20/wielkie-mozliwosci-malej-biblioteki-togglz/?utm_source=rss&utm_source=jvm-bloggers.com&utm_medium=rss&utm_medium=link&utm_campaign=wielkie-mozliwosci-malej-biblioteki-togglzs
 
 **spring**  
